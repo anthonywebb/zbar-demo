@@ -105,7 +105,7 @@ const main = async () => {
     const div = document.createElement('div');
     div.className = 'full middle';
     div.style = 'height: 72px; width: 100%; text-align: center; font-size: 36px';
-    div.innerText = 'Cannot get cammera: ' + err;
+    div.innerText = 'Cannot get camera: ' + err;
     document.body.appendChild(div);
     console.error(err);
   }
