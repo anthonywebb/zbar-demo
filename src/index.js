@@ -1,4 +1,5 @@
 import React from 'react';
+import * as ReactDom from "@testing-library/react";
 import {scanImageData} from 'zbar.wasm';
 
 const SCAN_PROID_MS = 500;
@@ -109,11 +110,12 @@ async function main() {
       await sleep(SCAN_PROID_MS);
     }
   } catch (err) {
-    const div = document.createElement('div');
-    div.className = 'full middle';
-    div.style = 'height: 72px; width: 100%; text-align: center; font-size: 36px';
-    div.innerText = 'Cannot get camera: ' + err;
-    document.body.appendChild(div);
+    let div = (
+      <div
+        className={'full middle'}
+        style={{height: 72, width: "100%", textAlign: 'center', fontSize: 36}}>{'Cannot get camera: ' + err}</div>);
+    let target = document.getElementById('status');
+    ReactDom.render(div, target);
     console.error(err);
   }
 }
