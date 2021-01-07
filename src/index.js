@@ -1,8 +1,9 @@
-import { scanImageData } from 'zbar.wasm';
+import React from 'react';
+import {scanImageData} from 'zbar.wasm';
 
-const SCAN_PROID_MS = 800;
+const SCAN_PROID_MS = 500;
 
-const handleResize = () => {
+function handleResize() {
   const width = document.documentElement.clientWidth;
   const height = document.documentElement.clientHeight;
   const video = document.getElementById('video');
@@ -12,25 +13,26 @@ const handleResize = () => {
   const canvas = document.getElementById('canvas');
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
-  if (width / video.videoWidth < height / video.videoHeight) {
+  if (width * video.videoHeight < height * video.videoWidth) {
     canvas.style.width = '100vw';
     canvas.style.height = 'auto';
   } else {
     canvas.style.width = 'auto';
     canvas.style.height = '100vh';
   }
-};
+}
 
-const init = async () => {
+async function init() {
   window.onresize = handleResize;
+  const videoConstraints = {
+    facingMode: "environment",
+    height: {max: 640},
+    width: {max: 640},
+  };
   const mediaStream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: {
-        facingMode: 'environment',
-        width: { max: 640 },
-        height: { max: 640 }
-      }
-    });
+    audio: false,
+    video: videoConstraints
+  });
   const video = document.getElementById('video');
   video.srcObject = mediaStream;
   video.setAttribute('playsinline', '');
@@ -39,9 +41,9 @@ const init = async () => {
     video.onloadedmetadata = r;
   });
   handleResize();
-};
+}
 
-const render = (symbols) => {
+function render(symbols) {
   const canvas = document.getElementById('canvas');
   const footer = document.getElementById('footer');
   const ctx = canvas.getContext('2d');
@@ -60,7 +62,7 @@ const render = (symbols) => {
     const points = sym.points;
     ctx.beginPath();
     for (let j = 0; j < points.length; ++j) {
-      const { x, y } = points[j];
+      const {x, y} = points[j];
       if (j === 0) {
         ctx.moveTo(x, y);
       } else {
@@ -76,9 +78,9 @@ const render = (symbols) => {
     div.innerText = `#${i}: Type: ${sym.typeName}; Value: "${sym.decode()}"`
     footer.appendChild(div);
   }
-};
+}
 
-const scan = async () => {
+async function scan() {
   const canvas = document.createElement('canvas');
   const video = document.getElementById('video');
   const width = video.videoWidth;
@@ -91,11 +93,15 @@ const scan = async () => {
   const res = await scanImageData(imgData);
   // console.log(res, Date.now());
   render(res);
-};
+}
 
-const sleep = ms => new Promise(r => { setTimeout(r, ms) });
+function sleep(ms) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, ms)
+  });
+}
 
-const main = async () => {
+async function main() {
   try {
     await init();
     while (true) {
@@ -110,6 +116,6 @@ const main = async () => {
     document.body.appendChild(div);
     console.error(err);
   }
-};
+}
 
 main();
