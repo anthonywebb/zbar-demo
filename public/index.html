@@ -9,7 +9,7 @@
       name="description"
       content="Online Demo of zbar.wasm"
     />
-    <title>ZBar.wasm</title>
+    <title>Barcode Scanner</title>
     <style>
       html,body {
         margin: 0;
@@ -37,7 +37,7 @@
       #title {
         font-size: 30px;
         color: #fff;
-        margin-left: 20px;
+        margin-left: 0px;
       }
       #footer {
         width: calc(100vw - 120px);
@@ -59,11 +59,9 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <video id="video" class="full"></video>
     <canvas id="canvas" class="full middle"></canvas>
+    <canvas id="overlay" class="full middle"></canvas>
     <div id="header" class="full">
-      <a target="_blank" href="https://github.com/samsam2310/zbar.wasm">
-        <img width="48px" src="%PUBLIC_URL%/GitHub-Mark-Light-64px.png">
-      </a>
-      <span id="title">ZBar.wasm</span>
+      <span id="title">Barcode Scanner</span>
     </div>
     <div id="footer" class="full">
       <div class="footerItem">AAA</div>
